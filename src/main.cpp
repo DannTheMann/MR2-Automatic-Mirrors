@@ -2,18 +2,21 @@
 #include <EEPROM.h>
 
 #define VERSION "1.0"
+
+// Mirror motor values
 #define MIRROR_POLL  3      // Seconds to check mirror state
 #define MIRROR_MAX_POS 255  // Maximum position mirror should move
+
+// GPIO
 #define MIRROR_PIN_1 1      // First digital out pin for HBridge
 #define MIRROR_PIN_2 2      // Second digital out pin for HBridge
-
 #define MIRROR_BUTTON 3     // DigitalIN for button change
 
 // EEPROM Values
 #define MIRROR_POSIT 1 // Position of mirror, 0 is closed and N is how far it reached, with max_N 
 
 /* ------------------------------------------ */
-#define DEBUG 1
+#define DEBUG 1 // Toggle to switch whether serial will be utilised for debugging
 // end definitions
 #ifdef DEBUG
     #define debug(x)   Serial.print (x)
@@ -32,6 +35,10 @@ static uint8_t mirror_state;
 
 // If eeprom fails, we can't continue
 static bool eepromFailure   = false;
+
+// Forward declaraton for linker
+void moveMirrors(bool);
+void updateEEPROM();
 
 void setup() 
 {
